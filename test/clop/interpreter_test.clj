@@ -18,8 +18,10 @@
     (is (= (interpret [:quote 1] {}) 1)))
   (testing "定義したラムダを呼び出せる"
     (let [l [:lambda [:n] [:* :n :n]]
-          square [:define :square [:x] l]]
-      (is (= (interpret square {}) :square)))))
+          square [:define :square l]
+          env (atom {})]
+      (is (= (interpret square env) :square))
+      (is (not (nil? (get @env :square)))))))
 
 (deftest interpreter-list-test
   (testing "リストを定義できる"

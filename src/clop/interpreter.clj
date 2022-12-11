@@ -25,7 +25,7 @@
                                           exp (get token 2)]
                                       ; 無名関数（ラムダ）を返す
                                       (fn [& args] (let [var-kvs (zipmap vars (into-array args))
-                                                         lambda-env (map #(assoc @global-environment (first %) (second %)) var-kvs)]
+                                                         lambda-env (map #(assoc @environment (first %) (second %)) var-kvs)]
                                                      (interpret exp lambda-env))))
            :else (let [vals (map #(interpret % @environment) token),
                        ; リストの1つめはグローバルに定義された変数ないしは関数に紐づく関数のはず
