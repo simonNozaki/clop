@@ -16,12 +16,13 @@
     (is (= (interpret [:* 3 3] global-environment) 9)))
   (testing "クォートを評価できる"
     (is (= (interpret [:quote 1] {}) 1)))
-  (testing "定義したラムダを呼び出せる"
+  (testing "定義したラムダを呼び出せる(引数一つ)"
     (let [l [:lambda [:n] [:* :n :n]]
           square [:define :square l]
-          env (atom {})]
+          env (atom {:* (fn [v] (reduce * v))})]
       (is (= (interpret square env) :square))
-      (is (not (nil? (get @env :square)))))))
+      (is (not (nil? (get @env :square))))
+      (is (= ((get @env :square) 4) 16)))))
 
 (deftest interpreter-list-test
   (testing "リストを定義できる"
