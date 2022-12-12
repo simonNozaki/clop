@@ -22,7 +22,12 @@
           env (atom {:* (fn [v] (reduce * v))})]
       (is (= (interpret square env) :square))
       (is (not (nil? (get @env :square))))
-      (is (= ((get @env :square) 4) 16)))))
+      (is (= ((get @env :square) 4) 16))))
+  (testing "変数に代入できる"
+    (let [env (atom {})]
+      (is (= (interpret [:define :n 1] env) :n))
+      (is (= (interpret [:set! :n 10] env) :n))
+      (is (= (get @env :n) 10)))))
 
 (deftest interpreter-list-test
   (testing "リストを定義できる"

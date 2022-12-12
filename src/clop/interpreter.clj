@@ -24,7 +24,8 @@
                                          var (second token)
                                          exp (get token 2)
                                          val (interpret exp environment)]
-                                     (swap! @environment assoc var val))
+                                     (swap! environment assoc var val)
+                                     var)
            (= :lambda (first token)) (let [_ (first token),
                                           vars (second token),
                                           exp (get token 2)]
