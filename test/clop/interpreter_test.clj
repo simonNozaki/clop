@@ -27,7 +27,12 @@
     (let [env (atom {})]
       (is (= (interpret [:define :n 1] env) :n))
       (is (= (interpret [:set! :n 10] env) :n))
-      (is (= (get @env :n) 10)))))
+      (is (= (get @env :n) 10))))
+  (testing "逐次処理で変数を計算できる"
+    ; テストに使う変数を事前に定義しておく
+    (interpret [:define :n 0] global-environment)
+    (is (= (interpret [:begin [:set! :n 5] [:+ :n 1]] global-environment) 6))
+    (is (= (get @global-environment :n) 5))))
 
 (deftest interpreter-list-test
   (testing "リストを定義できる"

@@ -37,6 +37,11 @@
                                                                         #(assoc @environment (first %) (second %))
                                                                         var-kvs))]
                                                      (interpret exp (atom lambda-env)))))
+           (= :begin (first token)) (let [_ (first token),
+                                          exps (rest token)]
+                                      ; mapするとリストになるので、lastで最後の結果だけ返す
+                                      (last
+                                        (map (fn [exp] (interpret exp environment)) exps)))
            :else (let [vals (map #(interpret % environment) token),
                        ; リストの1つめはグローバルに定義された変数ないしは関数に紐づく関数のはず
                        proc (first vals),
