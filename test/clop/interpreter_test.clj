@@ -14,6 +14,14 @@
     (is (= (interpret [:+ 1 2] global-environment) 3))
     (is (= (interpret [:- 10 2] global-environment) 8))
     (is (= (interpret [:* 3 3] global-environment) 9)))
+  (testing "比較演算できる"
+    (is (= (interpret [:> 4 2] global-environment) true))
+    (is (= (interpret [:> 1 3] global-environment) false))
+    (is (= (interpret [:>= 3 3] global-environment) true)))
+  (testing "条件分岐ができる"
+    ; bool型が用意されていないのでtrue: 1, false: 0とする
+    (is (= (interpret [:if [:> 2 1] 1 0] global-environment) 1))
+    (is (= (interpret [:if [:= [:* 3 5] 15] 1 0] global-environment) 1)))
   (testing "クォートを評価できる"
     (is (= (interpret [:quote 1] {}) 1)))
   (testing "定義したラムダを呼び出せる(引数一つ)"

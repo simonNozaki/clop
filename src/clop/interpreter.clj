@@ -7,12 +7,13 @@
     (vector? token)
       (cond
            (= :quote (first token)) (second token)
+           ; if, define, lambdaなどキーワードは評価に使わないので_で無視してしまってOK
            (= :if (first token)) (let [
                      _ (first token),
                      condition (second token),
                      conseq (get token 2),
                      alt (get token 3)
-                     result (when (interpret condition environment) conseq alt)]
+                     result (if (interpret condition environment) conseq alt)]
                  (interpret result environment))
            (= :define (first token)) (let [_ (first token),
                          variable (second token),
