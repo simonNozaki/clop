@@ -20,4 +20,4 @@
 (deftest debug
   (testing "debug"
     (let [tokens (tokenize "(define n 1)")]
-      (println (parse tokens)))))
+      (is (= (parse tokens) [:define :n 1])))))

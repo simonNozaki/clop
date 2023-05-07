@@ -19,30 +19,26 @@
       (s/replace text #"[\(\)]" " $0 ")
       #" ")))
 
+; 評価していない残りのトークン文字列
 (def current-tokens (ref nil))
-(def rest-subjects (ref nil))
+; 次に評価対称となるトークン文字列
 (def subject (ref nil))
 
 (defn parse [tokens]
-  ; whileで参照するもとのトークン文字配列を状態管理する(ソフトウェアトランザクションメモリ)
-  (dosync (ref-set current-tokens tokens))
   "パーサ、要素の配列からASTを生成"
   (when (or (empty? tokens) (nil? tokens))
     (throw (RuntimeException. "unexpected EOF while reading")))
-  ; スペースを入れて分割、空文字を除いたリストを生成
-  (let [identifier (first @current-tokens)]
+  ; 再帰で評価するので、はじめに評価対象と残評価を更新
+  (dosync (ref-set current-tokens (rest tokens)))
+  (dosync (ref-set subject (first @current-tokens)))
+  (let [identifier (first tokens)]
     (cond
       (= identifier "(")
         (let [symbols (atom [])]
-          (dosync (ref-set rest-subjects (rest tokens)))
-          (dosync (ref-set subject (rest @rest-subjects)))
-          (while (not (= subject ")"))
-            (swap! symbols conj (parse rest)
-             ; subjectのカーソルを一つ動かす
-             (dosync (ref-set rest-subjects (rest tokens)))
-             (dosync (ref-set subject (rest @rest))))
+          (while (not (= @subject ")"))
+            (swap! symbols conj (parse @current-tokens)))
           @symbols)
       (= identifier ")")
         (throw (RuntimeException. "unexpected ')'"))
       :else
-         (to-atom identifier)))))
+         (to-atom identifier))))
