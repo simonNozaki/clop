@@ -26,7 +26,8 @@
     (is (= (parse (tokenize "(+ 1 (* 2 (/ 9 3)))")) [:+ 1 [:* 2 [:/ 9 3]]])))
   (testing "整数演算2"
     (is (= (parse (tokenize "(+ 1 (* 2 2) (/ 8 2))")) [:+ 1 [:* 2 2] [:/ 8 2]])))
-  (testing "関数定義(シンプル)"
-    (is (= (parse (tokenize "(define true (lambda () (1)))")) [:define :true [] [1]])))
+  (testing "関数定義: シンプル"
+    (is (= (parse (tokenize "(define true (lambda () (1)))")) [:define :true [:lambda [] [1]]])))
+  (testing "関数定義: 引数あり"
+    (is (= (parse (tokenize "(define square (lambda (n) (* n n)))")) [:define :square [:lambda [:n] [:* :n :n]]])))
   )
-

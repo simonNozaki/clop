@@ -38,7 +38,8 @@
           (while (not (= @subject ")"))
             (swap! symbols conj (parse @current-tokens)))
           ; 直前の閉じカッコ(")")を省いて制御を戻す
-          (dosync (ref-set current-tokens (rest tokens)))
+          (dosync (ref-set current-tokens (rest @current-tokens)))
+          (dosync (ref-set subject (first @current-tokens)))
           @symbols)
       (= identifier ")")
         (throw (RuntimeException. "unexpected ')'"))
