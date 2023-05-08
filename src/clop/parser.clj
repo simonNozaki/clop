@@ -37,6 +37,8 @@
         (let [symbols (atom [])]
           (while (not (= @subject ")"))
             (swap! symbols conj (parse @current-tokens)))
+          ; 直前の閉じカッコ(")")を省いて制御を戻す
+          (dosync (ref-set current-tokens (rest tokens)))
           @symbols)
       (= identifier ")")
         (throw (RuntimeException. "unexpected ')'"))
