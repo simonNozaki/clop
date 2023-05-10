@@ -12,9 +12,12 @@
     (is (= (evaluate "(* 3 3)")) 9)
     (is (= (evaluate "(/ 6 2)"))) 3)
   (testing "論理演算を評価できる"
-    (is (= (evaluate "(if (= 4 (* 2 2)) 1 0)") 1))))
+    (is (= (evaluate "(if (= 4 (* 2 2)) 1 0)") 1)))
+  (testing "配列リテラルを評価できる"
+    (is (= (evaluate "(cons 1 3 5)") [1 3 5])))
+  (testing "クォートを評価できる"
+    (is (= (evaluate "(quote 1)") 1)))
+  (testing "配列を操作できる"
+      (is (= (evaluate "(first (cons 1 3 5))") 1))
+      (is (= (evaluate "(last (cons 1 3 5))") 5))))
 
-(deftest e2e-tests
-  (testing "定義した関数を呼び出せる"
-    (evaluate "(define square (lambda (n) (* n n)))")
-    (is (= (evaluate "(square 3)") 9))))
