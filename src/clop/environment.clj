@@ -15,5 +15,5 @@
    :second #(second %),
    :last #(last %),
    ; リストで入ってくるので、ベクタに直す
-   :cons (fn [v] (into [] v)),
+   :list (fn [v] (into [] v)),
    }))
