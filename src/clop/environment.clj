@@ -1,8 +1,13 @@
-(ns clop.environment)
+(ns clop.environment
+  (:import (java.util List)))
+
+(defn unwrap-list [col]
+  "mapなどによりListインスタンスになることがある。ListがPersistentVectorを内包している場合アンラップして返す"
+  (if (instance? List (first col)) (first col) col))
 
 (def global-environment
   (atom {
-   :+ (fn [v] (reduce + v)),
+   :+ #(reduce + (unwrap-list %)),
    :- (fn [v] (reduce - v)),
    :* (fn [v] (reduce * v)),
    :/ (fn [v] (reduce / v)),
@@ -11,9 +16,12 @@
    :< (fn [v] (< (first v) (second v))),
    :<= (fn [v] (<= (first v) (second v))),
    := (fn [v] (= (first v) (second v))),
-   :first #(first %),
-   :second #(second %),
-   :last #(last %),
+   ; interpreterで、mapの結果list（ISeqのサブクラスインスタンス）が流れてくる可能性があるので
+   ; PersistentVectorが含まれているかを確認してからintoで変換
+   ; second, last, listについても同様
+   :first #(first (unwrap-list %)),
+   :second #(second (unwrap-list %)),
+   :last #(last (unwrap-list %)),
    ; リストで入ってくるので、ベクタに直す
-   :list (fn [v] (into [] v)),
+   :list #(into [] (unwrap-list %))
    }))

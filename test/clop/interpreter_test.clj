@@ -47,4 +47,6 @@
     (is (= (interpret [:list 1 3 5] global-environment) [1 3 5])))
   (testing "要素にアクセスできる"
     (is (= (interpret [:first 1 3 5] global-environment) 1))
-    (is (= (interpret [:last 1 3 5] global-environment) 5))))
+    (is (= (interpret [:last 1 3 5] global-environment) 5)))
+  (testing "アクセサと組み合わせ"
+    (is (= (interpret [:first [:list 1 3 5]] global-environment) 1))))

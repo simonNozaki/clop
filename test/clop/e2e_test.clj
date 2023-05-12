@@ -22,3 +22,9 @@
   (testing "配列を操作できる"
       (is (= (evaluate "(first (list 1 3 5))") 1))
       (is (= (evaluate "(last (list 1 3 5))") 5))))
+
+(deftest e2e-multiple-definitions
+  (testing "定義した配列を操作できる"
+    (evaluate "(define even (list 2 4 6))")
+    (is (= (evaluate "(last even)") 6))
+    (is (= (evaluate "(+ even)") 12))))
