@@ -1,9 +1,11 @@
 (ns clop.e2e-test
-  (:require [clojure.test :refer :all])
-  (:use [clop.core]
-        [clop.interpreter]
-        [clop.environment]
-        [clop.parser]))
+  (:require
+    [clojure.test :refer :all]
+    [clop.core :refer :all]
+    [clop.environment :refer :all]
+    [clop.interpreter :refer :all]
+    [clop.parser :refer :all]))
+
 
 (deftest e2e-single-values
   (testing "数値を評価できる"
@@ -20,8 +22,9 @@
   (testing "クォートを評価できる"
     (is (= (evaluate "(quote (1 3 5))") '(1 3 5))))
   (testing "配列を操作できる"
-      (is (= (evaluate "(first (vector 1 3 5))") 1))
-      (is (= (evaluate "(last (vector 1 3 5))") 5))))
+    (is (= (evaluate "(first (vector 1 3 5))") 1))
+    (is (= (evaluate "(last (vector 1 3 5))") 5))))
+
 
 (deftest e2e-multiple-definitions
   (testing "定義した配列を操作できる"

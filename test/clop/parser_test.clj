@@ -1,6 +1,8 @@
 (ns clop.parser-test
-  (:require [clojure.test :refer :all])
-  (:use [clop.parser]))
+  (:require
+    [clojure.test :refer :all]
+    [clop.parser :refer :all]))
+
 
 (deftest parser-atomize-test
   (testing "キーワードにできる"
@@ -9,9 +11,11 @@
   (testing "数値にできる"
     (is (= (to-atom "1") 1))))
 
+
 (deftest parser-tokenize-test
   (testing "文字列を意味のある区切りで分解できる"
     (is (= (tokenize "(define n 1)") ["(" "define" "n" "1" ")"]))))
+
 
 (deftest parser-parsing-test
   (testing "一番シンプル"
@@ -29,5 +33,4 @@
   (testing "関数定義: シンプル"
     (is (= (parse (tokenize "(define true (lambda () (1)))")) [:define :true [:lambda [] [1]]])))
   (testing "関数定義: 引数あり"
-    (is (= (parse (tokenize "(define square (lambda (n) (* n n)))")) [:define :square [:lambda [:n] [:* :n :n]]])))
-  )
+    (is (= (parse (tokenize "(define square (lambda (n) (* n n)))")) [:define :square [:lambda [:n] [:* :n :n]]]))))

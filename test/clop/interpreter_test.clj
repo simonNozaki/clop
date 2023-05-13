@@ -1,7 +1,9 @@
 (ns clop.interpreter-test
-  (:require [clojure.test :refer :all])
-  (:use [clop.interpreter]
-        [clop.environment]))
+  (:require
+    [clojure.test :refer :all]
+    [clop.environment :refer :all]
+    [clop.interpreter :refer :all]))
+
 
 (deftest interpreter-special-form-test
   (testing "数値リテラルを評価できる"
@@ -19,7 +21,7 @@
     (is (= (interpret [:> 1 3] global-environment) false))
     (is (= (interpret [:>= 3 3] global-environment) true)))
   (testing "条件分岐ができる"
-    ; bool型が用意されていないのでtrue: 1, false: 0とする
+    ;; bool型が用意されていないのでtrue: 1, false: 0とする
     (is (= (interpret [:if [:> 2 1] 1 0] global-environment) 1))
     (is (= (interpret [:if [:= [:* 3 5] 15] 1 0] global-environment) 1)))
   (testing "クォートを評価できる"
@@ -37,10 +39,11 @@
       (is (= (interpret [:set! :n 10] env) :n))
       (is (= (get @env :n) 10))))
   (testing "逐次処理で変数を計算できる"
-    ; テストに使う変数を事前に定義しておく
+    ;; テストに使う変数を事前に定義しておく
     (interpret [:define :n 0] global-environment)
     (is (= (interpret [:begin [:set! :n 5] [:+ :n 1]] global-environment) 6))
     (is (= (get @global-environment :n) 5))))
+
 
 (deftest interpreter-list-test
   (testing "リストを定義できる"
