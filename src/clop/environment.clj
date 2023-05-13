@@ -7,21 +7,23 @@
 
 (def global-environment
   (atom {
-   :+ #(reduce + (unwrap-list %)),
-   :- (fn [v] (reduce - v)),
-   :* (fn [v] (reduce * v)),
-   :/ (fn [v] (reduce / v)),
-   :> (fn [v] (> (first v) (second v))),
-   :>= (fn [v] (>= (first v) (second v))),
-   :< (fn [v] (< (first v) (second v))),
-   :<= (fn [v] (<= (first v) (second v))),
-   := (fn [v] (= (first v) (second v))),
-   ; interpreterで、mapの結果list（ISeqのサブクラスインスタンス）が流れてくる可能性があるので
-   ; PersistentVectorが含まれているかを確認してからintoで変換
-   ; second, last, listについても同様
-   :first #(first (unwrap-list %)),
-   :second #(second (unwrap-list %)),
-   :last #(last (unwrap-list %)),
-   ; リストで入ってくるので、ベクタに直す
-   :list #(into [] (unwrap-list %))
-   }))
+         :+ #(reduce + (unwrap-list %)),
+         :- #(reduce - (unwrap-list %)),
+         :* #(reduce * (unwrap-list %)),
+         :/ #(reduce / (unwrap-list %)),
+         :> (fn [v] (> (first v) (second v))),
+         :>= (fn [v] (>= (first v) (second v))),
+         :< (fn [v] (< (first v) (second v))),
+         :<= (fn [v] (<= (first v) (second v))),
+         := (fn [v] (= (first v) (second v))),
+         ; interpreterで、mapの結果list（ISeqのサブクラスインスタンス）が流れてくる可能性があるので
+         ; PersistentVectorが含まれているかを確認してからintoで変換
+         ; second, last, listについても同様
+         :first #(first (unwrap-list %)),
+         :second #(second (unwrap-list %)),
+         :last #(last (unwrap-list %)),
+         :rest #(rest (unwrap-list %)),
+         ; リストで入ってくるので、ベクタに直す
+         :vector #(into [] (unwrap-list %))
+         }
+        ))

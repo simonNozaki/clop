@@ -1,12 +1,14 @@
 (ns clop.interpreter
-  (:use [clop.environment]))
+  (:use [clop.environment]
+        [clop.sequence]))
 
 (defn interpret [token, environment]
   (cond
     (keyword? token) (get @environment token)
     (vector? token)
       (cond
-           (= :quote (first token)) (second token)
+           ; quoteは2番目が必ずListになる
+           (= :quote (first token)) (v-to-l (second token))
            ; if, define, lambdaなどキーワードは評価に使わないので_で無視してしまってOK
            (= :if (first token)) (let [
                      _ (first token),

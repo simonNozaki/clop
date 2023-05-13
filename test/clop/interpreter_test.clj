@@ -44,9 +44,9 @@
 
 (deftest interpreter-list-test
   (testing "リストを定義できる"
-    (is (= (interpret [:list 1 3 5] global-environment) [1 3 5])))
+    (is (= (interpret [:vector 1 3 5] global-environment) [1 3 5])))
   (testing "要素にアクセスできる"
     (is (= (interpret [:first 1 3 5] global-environment) 1))
     (is (= (interpret [:last 1 3 5] global-environment) 5)))
   (testing "アクセサと組み合わせ"
-    (is (= (interpret [:first [:list 1 3 5]] global-environment) 1))))
+    (is (= (interpret [:first [:vector 1 3 5]] global-environment) 1))))
