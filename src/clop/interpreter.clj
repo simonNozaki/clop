@@ -51,6 +51,7 @@
       :else (let [vals (map #(interpret % environment) token),
                   ;; リストの1つめはグローバルに定義された変数ないしは関数に紐づく関数のはず
                   proc (first vals),
-                  args (rest vals)]
+                  ;; restの結果argsは意図せずListになっているのでアンラップ
+                  args (l-to-raw (rest vals))]
               (proc args)))
     :else token))
