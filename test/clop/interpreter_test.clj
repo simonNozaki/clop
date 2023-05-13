@@ -25,7 +25,7 @@
     (is (= (interpret [:if [:> 2 1] 1 0] global-environment) 1))
     (is (= (interpret [:if [:= [:* 3 5] 15] 1 0] global-environment) 1)))
   (testing "クォートを評価できる"
-    (is (= (interpret [:quote 1] {}) 1)))
+    (is (= (interpret [:quote [1]] {}) (quote (1)))))
   (testing "定義したラムダを呼び出せる(引数一つ)"
     (let [l [:lambda [:n] [:* :n :n]]
           square [:define :square l]

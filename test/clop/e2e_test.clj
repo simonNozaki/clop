@@ -30,4 +30,11 @@
   (testing "定義した配列を操作できる"
     (evaluate "(define even (vector 2 4 6))")
     (is (= (evaluate "(last even)") 6))
-    (is (= (evaluate "(+ even)") 12))))
+    (is (= (evaluate "(+ even)") 12)))
+  (testing "関数を定義して呼び出せる: 単純"
+    (evaluate "(define average (lambda (m n) (/ (+ m n) 2)))")
+    (is (= (evaluate "(average 3 7)") 5)))
+  ;(testing "関数を定義して呼び出せる: 再帰"
+  ;  (evaluate "(define factorial (lambda (n) (if (< n 2) n (* n (factorial (- n 1))))))")
+  ;  (is (= (evaluate "(factorial 5)") 120)))
+  )
