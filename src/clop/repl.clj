@@ -13,7 +13,10 @@
       (print "-> ")
       (flush)
       (let [newline (read-line)]
-        (println (evaluate newline))))))
+        (if (= newline (or "exit" "quit"))
+          (println "Bye now!"))
+        (println (evaluate newline))
+        ))))
 
 (defn -main
   []
