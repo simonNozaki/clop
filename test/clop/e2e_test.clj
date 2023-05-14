@@ -33,8 +33,13 @@
     (is (= (evaluate "(+ even)") 12)))
   (testing "関数を定義して呼び出せる: 単純"
     (evaluate "(define average (lambda (m n) (/ (+ m n) 2)))")
-    (is (= (evaluate "(average 3 7)") 5)))
-  ;(testing "関数を定義して呼び出せる: 再帰"
-  ;  (evaluate "(define factorial (lambda (n) (if (< n 2) n (* n (factorial (- n 1))))))")
-  ;  (is (= (evaluate "(factorial 5)") 120)))
+    (is (= (evaluate "(average 3 7)") 5))
+    (is (= (evaluate "(begin (define r 3) (* 3 (* r r)))") 27)))
+  (testing "関数を定義して呼び出せる: 条件分岐あり"
+    ; 1: true, 0: false
+    (evaluate "(define positive? (lambda (n) (if (> n 0) 1 0)))")
+    (is (= (evaluate "(positive? -1)") 0)))
+  (testing "関数を定義して呼び出せる: 再帰"
+    (evaluate "(define factorial (lambda (n) (if (< n 2) n (* n (factorial (- n 1))))))")
+    (is (= (evaluate "(factorial 5)") 120)))
   )

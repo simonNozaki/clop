@@ -36,7 +36,8 @@
                                       exp (get token 2)]
                                   ;; 無名関数（ラムダ）を返す
                                   (fn [& args]
-                                    (let [var-kvs (zipmap vars (into-array args))
+                                    ; ラムダの引数と実引数をハッシュテーブルにする。argsは可変引数で受け取るとListになるのでアンラップして扱う
+                                    (let [var-kvs (zipmap vars (into-array (l-to-raw args)))
                                           ;; mapしているのでLazySeqになってしまう、firstで取り出し
                                           lambda-env (first
                                                        (map
